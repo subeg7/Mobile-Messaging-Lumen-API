@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\user_shortcodes;
 use App\Shortcode;
+use App\User;
 use App\pull_categories;
 use App\pull_main_key;
 use App\pull_sub_keys;
@@ -18,7 +19,7 @@ class PullController extends Controller
     $usercode->fld_shortcode_id = $request->fld_shortcode_id;
     $usercode->assign_type = $request->assign_type;
     $usercode->save();
-    return $request;
+    return "successfully assigned the shortcode to the user";
   }
 
   public function addKey(Request $request){
@@ -46,8 +47,13 @@ class PullController extends Controller
   }
 
 
-  public function viewshortcode($id){
-    echo "view the shortcode";
+  public function viewshortcodes($id){
+      $user = User::find($id);
+      $shortcodes = $user->shortcode;
+      foreach($shortcodes as $code){
+          echo"<br>[name]:".$code->fld_chr_name."| [code]:".$code->assign_to;
+      }
+      // return $user->shortcode;
   }
 
 

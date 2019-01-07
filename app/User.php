@@ -38,5 +38,11 @@ class User extends Authenticatable  implements JWTSubject
     public function getJWTCustomClaims()
     {
       return [];
-    }    
+    }
+
+    public function shortcode(){
+      return $this->belongsToMany('App\Shortcode','user_shortcodes','fld_user_id','fld_shortcode_id');
+    }
+
+
 }
