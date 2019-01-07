@@ -49,13 +49,14 @@ class PullController extends Controller
 
   public function viewshortcodes($id){
       $user = User::find($id);
-      $shortcodes = $user->shortcode;
-      foreach($shortcodes as $code){
-          echo"<br>[name]:".$code->fld_chr_name."| [code]:".$code->assign_to;
-      }
-      // return $user->shortcode;
+      $shortcodes = $user->shortcode;//returns all the shortcodes assigned to that user
+      return $user->shortcode;
   }
 
+  public function viewkeylist($id){
+    $mKeys = pull_main_key::with('subkeys')->where('user_id',$id)->get();
+    return $mKeys;
+  }
 
 
 }

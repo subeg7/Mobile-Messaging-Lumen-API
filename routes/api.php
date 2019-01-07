@@ -77,8 +77,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         //pull component
         Route::post('/assignshortcode','PullController@assignshortcode');
-        Route::get('/viewshortcodes/{id}','PullController@viewshortcodes');
         Route::post('/addkey','PullController@addkey');
+        Route::get('/viewshortcodes/{id}','PullController@viewshortcodes');
+        Route::get('/viewkeylist/{id}','PullController@viewkeylist');
 
 
 

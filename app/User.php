@@ -44,5 +44,20 @@ class User extends Authenticatable  implements JWTSubject
       return $this->belongsToMany('App\Shortcode','user_shortcodes','fld_user_id','fld_shortcode_id');
     }
 
+    public function subkeys(){
+      return $this->hasManyThrough(
+        'App\pull_sub_keys',
+        'App\pull_main_key',
+        'user_id', //foreignkey on pull_main_key table
+        'main_key_id',//foreignkey on pull_sub_keys
+        'id', //local key on users table
+        'id' //local key on main_key table
+      );
+    }
+
+    public function mainkeys(){
+      return $this->hasMany('App\pull_main_key','user_id');
+
+    }
 
 }
