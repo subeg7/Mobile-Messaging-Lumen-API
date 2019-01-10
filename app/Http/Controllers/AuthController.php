@@ -26,10 +26,10 @@ class AuthController extends Controller
             'email',
             'password',
             'password_confirmation'
-           
-        );  
 
-        $validator = Validator::make($input, $rules); 
+        );
+
+        $validator = Validator::make($input, $rules);
 
         if($validator->fails()) {
             $error = $validator->messages()->toJson();
@@ -52,6 +52,7 @@ class AuthController extends Controller
     {
         // grab credentials from the request
         $credentials = $request->only('email', 'password');
+        // return $credentials;
         try {
             // attempt to verify the credentials and create a token for the user
             if (! $token = JWTAuth::attempt($credentials)) {
@@ -65,37 +66,37 @@ class AuthController extends Controller
         // all good so return the token
         return response()->json(compact('token'));
     }
-     
+
     public function updateUser(Request $request, $id){
         $user = User::find($id);
         try {
-                 if (! $user = JWTAuth::parseToken()->authenticate()) 
+                 if (! $user = JWTAuth::parseToken()->authenticate())
                 {
                  return response()->json(['user_not_found'], 404);
                 }
-            } 
+            }
             catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
                  return response()->json(['token_expired'], $e->getStatusCode());
-             } 
+             }
         $user->update([
             'name' => $request->name,
             'password' => bcrypt($request->password)
-            ]); 
+            ]);
          return response([
             'status' => 'update success',
             'data' => $user
           ], 200);
-            
+
     }
     public function deleteUser($id){
         $user = User::find($id);
         $user->delete();
         return response(['status' => 'deleted succesfully'],200);
     }
-    
+
     public function logout(Request $request) {
         $this->validate($request, ['token' => 'required']);
-        
+
         try {
             JWTAuth::invalidate($request->input('token'));
             return response([
@@ -147,7 +148,7 @@ class AuthController extends Controller
         ]);
     }
     public function createRole(Request $request){
-         
+
         $role = new Role();
         $role->name = $request->input('name');
        // dd($role);

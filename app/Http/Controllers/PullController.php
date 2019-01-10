@@ -46,16 +46,14 @@ class PullController extends Controller
     return "keys successfully added";
   }
 
-
   public function viewshortcodes($id){
-      $user = User::find($id);
-      $shortcodes = $user->shortcode;//returns all the shortcodes assigned to that user
-      return $user->shortcode;
+    $user = User::find($id);
+    return $user->shortcode;//returns all the shortcodes assigned to that user
   }
 
   public function viewkeylist($id){
-    $mKeys = pull_main_key::with('subkeys')->where('user_id',$id)->get();
-    return $mKeys;
+    $keys = pull_main_key::with('subkeys')->where('user_id',$id)->get();
+    return $keys;
   }
 
 

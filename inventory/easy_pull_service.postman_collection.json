@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "d3d62660-8fe9-4a12-b994-ee23092bd8fc",
+		"name": "easy_pull_service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Logins",
+			"item": [
+				{
+					"name": "user login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"testman@gmail.com\",\n   \"password\": \"testman\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reseller login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"reseller@gmail.com\",\n   \"password\": \"reseller\"\n}\n"
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "assign shortcode to a user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"fld_user_id\":1,\n\t\"assign_type\":\"dedicated\",\n\t\"fld_shortcode_id\":1\n}"
+				},
+				"url": {
+					"raw": "{{url}}/assignshortcode",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"assignshortcode"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add key for pull",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"main_key\":{\n\t\t\"user_id\":1,\n\t\t\"category_id\":1,\n\t\t\"shortcode_id\":2,\n\t\t\"name\":\"HelloPull\",\n\t\t\"disable_message\":\"hallu allu deisled message\",\n\t\t\"failure_message\":\"failed in syntax! Please type correct la\"\n\t},\n\t\n\t\"sub_keys\":[\n\t\t{\n\t\t\t\"name\":\"hello1\",\n\t\t\t\"sucess_message\":\"votsakjsa kjs fkajf akfdj l\",\n\t\t\t\"template_id\":\"\",\n\t\t\t\"address_book_id\":\"\"\n\t\t\t\n\t\t},{\n\t\t\t\"name\":\"hello2\",\n\t\t\t\"sucess_message\":\"votsakjsa kjs fkajf akfdj l\",\n\t\t\t\"template_id\":\"\",\n\t\t\t\"address_book_id\":\"\"\n\t\t\t\n\t\t},{\n\t\t\t\"name\":\"hello3\",\n\t\t\t\"sucess_message\":\"sdfs sdfs vsdfsoting subksdfsdffey1\",\n\t\t\t\"template_id\":\"\",\n\t\t\t\"address_book_id\":\"\"\n\t\t\t\n\t\t},{\n\t\t\t\"name\":\"hello4\",\n\t\t\t\"sucess_message\":\"thank your voting ddfs\",\n\t\t\t\"template_id\":\"\",\n\t\t\t\"address_book_id\":\"\"\n\t\t\t\n\t\t},{\n\t\t\t\"name\":\"hello5\",\n\t\t\t\"sucess_message\":\"thafsdssdfsnk your vodfssting sudfsdbkeysf1\",\n\t\t\t\"template_id\":\"\",\n\t\t\t\"address_book_id\":\"\"\n\t\t\t\n\t\t},{\n\t\t\t\"name\":\"hello6\",\n\t\t\t\"sucess_message\":\"thansdfk fsdfyourdqeqw votirweng subkednmfgby1\",\n\t\t\t\"template_id\":\"\",\n\t\t\t\"address_book_id\":\"\"\n\t\t\t\n\t\t}\n\t\n\t]\n}"
+				},
+				"url": {
+					"raw": "{{url}}/addkey",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"addkey"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all ShortCodes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/viewshortcodes/1",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"viewshortcodes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view keylists",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
