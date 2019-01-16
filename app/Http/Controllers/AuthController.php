@@ -37,8 +37,15 @@ class AuthController extends Controller
         }
         $user = new User;
         $user->email = $request->email;
-        $user->name = $request->name;
+        $user->username = $request->name;
         $user->password = bcrypt($request->password);
+        $user->ip_address = $request->ip_address;
+        $user->login_validate=$request->login_validate;
+        $user->fld_reseller_id=$request->reseller_id;
+        $user->contact_number=$request->contact_number;
+        $user->fld_transaction_id=$request->transaction_id;
+        $user->fld_balance_type=$request->balance_type;
+        $user->fld_reseller_id=$request->reseller_id;
         $user->save();
        // dd($user);
         return response([

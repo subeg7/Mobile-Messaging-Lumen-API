@@ -6,12 +6,17 @@ Route::group(['prefix' => 'v1'], function () {
         //loginuser
         Route::post('login', 'AuthController@authenticate');
         //register,delete user
-        Route::group(['middleware' =>['jwt.verify','role:admin']], function(){
+         Route::group(['middleware' =>['role:admin']],function(){
+
+        // Route::group(['middleware' =>['jwt.verify','role:admin']], function(){
             Route::post('register','AuthController@register');
             Route::delete('deleteuser/{id}','AuthController@deleteUser');
             Route::get('getallusers','AuthController@getallusers');
-
+            Route::get('testroute','PullController@test');
         });
+
+        // Route::get('testroute','PullController@test');
+
 
         //get user
         Route::group(['middleware' => ['jwt.verify','ability:admin|reseller,list-user']], function() {
@@ -76,11 +81,12 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('updatebalance/{balance}','BalanceTransactionController@updatebalance');
 
         //pull component
+      Route::group(['middleware' => ['jwt.verify']], function(){
         Route::post('/assignshortcode','PullController@assignshortcode');
         Route::post('/addkey','PullController@addkey');
         Route::get('/viewshortcodes/{id}','PullController@viewshortcodes');
         Route::get('/viewkeylist/{id}','PullController@viewkeylist');
-
+      });
 
 
     });

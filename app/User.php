@@ -57,7 +57,10 @@ class User extends Authenticatable  implements JWTSubject
 
     public function mainkeys(){
       return $this->hasMany('App\pull_main_key','user_id');
+    }
 
+    public function role(){
+      return $this->belongsTo('App\Role','role_id');
     }
 
 }

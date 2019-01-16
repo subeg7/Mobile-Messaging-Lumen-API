@@ -30,6 +30,8 @@ class PullController extends Controller
     $mainKey->shortcode_id= $request->main_key['shortcode_id'];
     $mainKey->disable_message= $request->main_key['disable_message'];
     $mainKey->failure_message= $request->main_key['failure_message'];
+    $mainKey->user_enable_status =1;
+    $mainKey->reseller_enable_status =0;
     $mainKey->save();
 
     //add the subkeys of the mainkeys
@@ -52,9 +54,15 @@ class PullController extends Controller
   }
 
   public function viewkeylist($id){
-    $keys = pull_main_key::with('subkeys')->where('user_id',$id)->get();
+    //assume $id as a resller and check it's clients
+    $clients = User::where('fld_reseller_id',$id)->pluck('id')->toArray();
+    if($clients==null) $clients[0]=$id; //no clients means $id itslef is a client
+    $keys = pull_main_key::with('subkeys')->whereIn('user_id',$clients)->get();
     return $keys;
   }
 
+  public function test(){
+    return "working";
+  }
 
 }
