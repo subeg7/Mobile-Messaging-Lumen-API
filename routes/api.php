@@ -87,6 +87,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/viewshortcodes/{id}','PullController@viewshortcodes');
         Route::get('/viewkeylist/{id}','PullController@viewkeylist');
         Route::post('/modifykeystatus/{id}','PullController@modifykeystatus');
+        Route::delete('/deletekey/{id}','PullController@deletekey');
 
       });
 

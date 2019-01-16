@@ -87,11 +87,25 @@ class PullController extends Controller
     ], 200);
     // return $role->name;
   }
+// ->where('main_key_id',$keyid)
+  public function deletekey($keyid){
+
+    $key = pull_main_key::with("subkeys")->where('id',$keyid);
+    $message = "successfully deleted the key";
+    // return $key->get();
+    if(sizeof($key->get())==0) $message= "key no longer exits! May be deleted already";
+    else $key->delete();
+    // return $key;
+    return response([
+        'status' =>$message
+    ], 200);
+  }
 
   public function test(){
     return "working";
   }
 
+  // publ
 
 
 }
