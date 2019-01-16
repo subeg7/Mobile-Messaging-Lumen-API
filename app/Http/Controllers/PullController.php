@@ -61,8 +61,37 @@ class PullController extends Controller
     return $keys;
   }
 
+  public function modifykeystatus(Request $request,$userid){
+    $statusMessage=array("DISABLED","ENABLED");
+    $message = "";
+    $key = pull_main_key::find($request->main_key_id);
+    $role = User::find($userid)->role()->first();
+    // echo"<br> role:".$role->name. " <br>reseller_enable_status: ".$key->reseller_enable_status."<br>" ;
+
+    if($role->name=='reseller'){
+      $key->reseller_enable_status=$request->enable_status;
+      $message = $role->name." has ".$statusMessage[$request->enable_status]." the selected key=>".$key;
+    }else if($role->name=='client' && $key->reseller_enable_status==1 ){
+      // echo"point 1";
+      $key->user_enable_status=$request->enable_status;//client condition
+      $message = $role->name." has ".$statusMessage[$request->enable_status]." the selected key=>".$key;
+    }else if($role->name=='client' && $key->reseller_enable_status==0){
+      $message = "Disabled by reseller, request reseller to modify";
+    }else{
+      $message = "Unknown error";
+    }
+
+    $key->save();
+    return response([
+        'status' => $message
+    ], 200);
+    // return $role->name;
+  }
+
   public function test(){
     return "working";
   }
+
+
 
 }
