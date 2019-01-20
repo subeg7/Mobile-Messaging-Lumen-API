@@ -55,7 +55,8 @@ class FileController extends Controller
     }
 
     public function viewdb($id){
-      $fileAsJson = File::with('file_columns')->with('columns_data')->find($id);
+      $fileAsJson = File::with('file_columns.columns_data')->find($id);
+      // $fileAsJson->only('name');
       return $fileAsJson;
     }
 }
