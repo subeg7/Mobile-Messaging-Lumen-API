@@ -63,43 +63,42 @@ class PullController extends Controller
 
   public function modifykeystatus(Request $request,$userid){
     $statusMessage=array("DISABLED","ENABLED");
-    $message = "";
+    $message = "Unknown error"; //message is changed when if/elseif condition is matched below
     $key = pull_main_key::find($request->main_key_id);
     $role = User::find($userid)->role()->first();
-    // echo"<br> role:".$role->name. " <br>reseller_enable_status: ".$key->reseller_enable_status."<br>" ;
 
     if($role->name=='reseller'){
       $key->reseller_enable_status=$request->enable_status;
       $message = $role->name." has ".$statusMessage[$request->enable_status]." the selected key=>".$key;
     }else if($role->name=='client' && $key->reseller_enable_status==1 ){
-      // echo"point 1";
+      //reseller has enabled the key so the client can modify the key status
       $key->user_enable_status=$request->enable_status;//client condition
       $message = $role->name." has ".$statusMessage[$request->enable_status]." the selected key=>".$key;
     }else if($role->name=='client' && $key->reseller_enable_status==0){
+      //reseller has disabled the key so the client cannot modify the key status
       $message = "Disabled by reseller, request reseller to modify";
-    }else{
-      $message = "Unknown error";
     }
 
     $key->save();
     return response([
         'status' => $message
     ], 200);
-    // return $role->name;
   }
-// ->where('main_key_id',$keyid)
+
+
   public function deletekey($keyid){
 
     $key = pull_main_key::with("subkeys")->where('id',$keyid);
     $message = "successfully deleted the key";
-    // return $key->get();
+
     if(sizeof($key->get())==0) $message= "key no longer exits! May be deleted already";
     else $key->delete();
-    // return $key;
+
     return response([
         'status' =>$message
     ], 200);
   }
+
 
   public function test(){
     return "working";
