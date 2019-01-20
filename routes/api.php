@@ -88,8 +88,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/viewkeylist/{id}','PullController@viewkeylist');
         Route::post('/modifykeystatus/{id}','PullController@modifykeystatus');
         Route::delete('/deletekey/{id}','PullController@deletekey');
-
       });
+
+      //file uploads
+      Route::post('/uploaddb/{id}','FileController@create');
+      Route::get('/viewdb/{id}','FileController@viewdb');
 
 
     });
