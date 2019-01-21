@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\YourExport;
-use App\Imports\YourImport;
+use App\Imports\UsersImport;
 use Maatwebsite\Excel\Excel;
 
 use Illuminate\Http\Request;
@@ -11,16 +10,21 @@ use App\File;
 use App\file_columns;
 use App\columns_data;
 
+use Exporter;
+use Importer;
+
+
+
 
 
 class FileController extends Controller
 {
     private $excel;
-    public static $count;
+    // public static $count;
 
     public function __construct(Excel $excel)
     {
-        FileController::$count++;
+        // FileController::$count++;
         // echo "After this request, FileController is instatntiated ".FileController::$count." times";
         $this->excel = $excel;
     }
@@ -30,17 +34,56 @@ class FileController extends Controller
         return $this->excel->download(new YourExport, 'users.xlsx');
     }
 
-    public function import()
+    public function import(Request $request)
     {
-        return $this->excel->import(new YourImport, 'users.xlsx');
+      if($request->hasFile('file')){
+        echo"file is found";
+      $path = $request->file('file')->getRealPath();
+      // echo " at ".$path;
+      //
+      // if(!empty($data) && $data->count()){
+      //
+      //     foreach ($data->toArray() as $key => $value) {
+      //
+      //         if(!empty($value)){
+      //
+      //             foreach ($value as $v) {
+      //
+      //                 $insert[] = ['title' => $v['title'], 'description' => $v['description']];
+      //
+      //             }
+      //         }
+      //     }
+      //
+      //     if(!empty($insert)){
+      //         Item::insert($insert);
+      //         return back()->with('success','Insert Record successfully.');
+      //     }
+      // }
+  }
+
+  return back()->with('error','Please Check your file, Something is wrong there.');
+
+
+
+
+      // $this->excel->import(new UsersImport, 'users.xlsx');
+      // return redirect('/')->with('success', 'All good!');
     }
 
 
 
     public function create(Request $request ,$id){
-      echo $request;
-      if($request->file!=null)
-      echo"...................file recieved is:".$request->file;
+
+      $excel = Importer::make('Excel');
+      $excel->load($request->file('file')->getRealPath());
+      $collection = $excel->getCollection();
+      echo $collection;
+
+
+      // echo $request;
+      // if($request->file!=null)
+      // echo"...................file recieved is:".$request->file;
 
       // Excel::
       // else echo"file is not found";
