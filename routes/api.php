@@ -91,9 +91,10 @@ Route::group(['prefix' => 'v1'], function () {
       });
 
       //file uploads
-      Route::post('/uploaddb/{id}','FileController@create');
+      Route::post('/uploaddb/{id}','FileController@uploaddb');
       Route::get('/viewdb/{id}','FileController@viewdb');
-      Route::get('/import','FileController@create');
+      Route::delete('/deletedb/{id}','FileController@deletedb');
+      // Route::get('/import','FileController@create');
 
 
     });

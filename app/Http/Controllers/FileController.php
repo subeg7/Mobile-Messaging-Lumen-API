@@ -73,33 +73,62 @@ class FileController extends Controller
 
 
 
-    public function create(Request $request ,$id){
+    public function uploaddb(Request $request ,$userId){
 
+      if($request->hasFile('file')){
       $excel = Importer::make('Excel');
       $excel->load($request->file('file')->getRealPath());
       $collection = $excel->getCollection();
-      echo $collection;
+      $totalRows = sizeof($collection);
+      $totalCols = sizeof($collection[0]);
+      // echo"total rows: ".$totalRows." & toal cols: ".$totalCols;
 
 
-      // echo $request;
-      // if($request->file!=null)
-      // echo"...................file recieved is:".$request->file;
+      //create a new file
+      $file = new File();
+      $file->name = $request->name;
+      $file->display_name = $request->name;
+      $file->user_id = $userId;
+      $file->rows_count = $totalRows;
+      $file->columns_count = $totalCols;
+      $file->save();
 
-      // Excel::
-      // else echo"file is not found";
-      //create file
-      // $file = new File();
-      // $file->name = $request->name;
-      // $file->display_name =$request->name;
-      // $file->user_id =$request->user_id;
-      //create columns
+      //store its columns
+      $columnNo=1;//tracks column order in input excel file
+      foreach($collection[0] as $col){//$collection[0] is always the column name or column header
+        $column = new file_columns();
+        $column->sequence_no = $columnNo;
+        $column->file_id = $file->id;
+        $column->name = $col;
+        $column->save();
+        $rowNo = 1;
+        //store this columns respective data
+        foreach($collection as $row){
+          $data = new columns_data();
+          // echo"cell[".++$rowNo."][".$columnNo."]=".$row[$columnNo-1]."<br>";
+          $data->column_id = $column->id;
+          $data->data =$row[$columnNo-1];//columnNo started at 1;
+          $data->row_no = $rowNo++;
+          $data->save();
+        }
+        $columnNo++;
+      }
+      return "successfully  stored ".$totalRows." rows & ".$totalCols." columns";
+    }else
+      return "error no file found";
 
-      // create columns_data
     }
 
-    public function viewdb($id){
-      $fileAsJson = File::with('file_columns.columns_data')->find($id);
+    public function viewdb($userId){
+      // ile_columns.columns_data
+      $fileAsJson = File::with('file_columns.columns_data')->where('user_id',$userId)->get();
       // $fileAsJson->only('name');
       return $fileAsJson;
+    }
+
+    public function deletedb($dbId){
+      $fileAsJson = File::with('file_columns.columns_data')->find($dbId);
+      $fileAsJson->delete();
+      return "successfully deleted the db";
     }
 }
