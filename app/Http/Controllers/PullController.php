@@ -104,7 +104,4 @@ class PullController extends Controller
     return "working";
   }
 
-  // publ
-
-
 }

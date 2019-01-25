@@ -119,11 +119,40 @@ class FileController extends Controller
 
     }
 
-    public function viewdb($userId){
-      // ile_columns.columns_data
-      $fileAsJson = File::with('file_columns.columns_data')->where('user_id',$userId)->get();
-      // $fileAsJson->only('name');
+    public function viewdbofuser($userId){
+      // below code returns every files+column+data of a user
+      // $fileAsJson = File::with('file_columns.columns_data')->where('user_id',$userId)->get();
+      $fileAsJson = File::where('user_id',$userId)->get(); //returns only the file details without data
+      return view('myFiles')->with('files',$fileAsJson);
       return $fileAsJson;
+    }
+
+    public function viewdbbyid($dbId){
+      // below code returns every files+column+data of a user
+      $fileAsJson = File::with('file_columns.columns_data')->find($dbId);
+      if($fileAsJson!=null)
+        return $fileAsJson;
+      else return "No file with id ".$dbId;
+    }
+
+    public function displayfileintable($dbId){
+      $fileAsJson = File::with('file_columns.columns_data')->find($dbId);
+      $data =$this->FormatIntoRows($fileAsJson);
+      return view('table')->with('data',$data)->with('title',$fileAsJson->name);
+    }
+
+    private function FormatIntoRows($json){
+      $rows = array(array());
+      $currRow=0;
+      $currCol =0;
+      foreach($json->file_columns as $col){
+        foreach($col->columns_data as $data){
+          $rows[$currRow++][$currCol]=$data->data;
+        }
+        $currRow=0;
+        $currCol++;
+      }
+    return $rows;
     }
 
     public function deletedb($dbId){
@@ -131,4 +160,6 @@ class FileController extends Controller
       $fileAsJson->delete();
       return "successfully deleted the db";
     }
+
+
 }
