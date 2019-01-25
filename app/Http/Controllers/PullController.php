@@ -85,7 +85,6 @@ class PullController extends Controller
     ], 200);
   }
 
-
   public function deletekey($keyid){
 
     $key = pull_main_key::with("subkeys")->where('id',$keyid);
@@ -98,7 +97,6 @@ class PullController extends Controller
         'status' =>$message
     ], 200);
   }
-
 
   public function test(){
     return "working";
