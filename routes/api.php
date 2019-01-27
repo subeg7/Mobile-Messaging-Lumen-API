@@ -90,15 +90,16 @@ Route::group(['prefix' => 'v1'], function () {
         Route::delete('/deletekey/{id}','PullController@deletekey');
       // });
 
-      //excel file controller
-      Route::post('/uploaddb/{id}','FileController@uploaddb');
-      Route::get('/viewdbofuser/{id}','FileController@viewdbofuser');
-      Route::get('/viewdbbyid/{id}','FileController@viewdbbyid');
-      Route::delete('/deletedb/{id}','FileController@deletedb');
-      Route::get('/displayfileintable/{id}','FileController@displayfileintable');
+        //excel file controller
+        Route::post('/uploaddb/{id}','FileController@uploaddb');
+        Route::get('/viewdbofuser/{id}','FileController@viewdbofuser');
+        Route::get('/viewdbbyid/{id}','FileController@viewdbbyid');
+        Route::delete('/deletedb/{id}','FileController@deletedb');
+        Route::get('/displayfileintable/{id}','FileController@displayfileintable');
 
-      //voting and polling routes
-      Route::post('/vote','VotingController@ParseVoteQuery');
+        //voting and polling routes
+        Route::post('/vote','VotingController@ParseVoteQuery');
+        Route::post('/viewresult','VotingController@ParseResultQuery');
 
 
 

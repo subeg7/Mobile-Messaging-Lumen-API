@@ -11,8 +11,6 @@ class VotingController extends Controller
     public function ParseVoteQuery(Request $request){
         $query= explode(" ",$request->text);
         $allMainKeys = pull_main_key::pluck('name','id')->all();
-        $mainKey_id;
-        $mainKey;
         if (false !== $mainKey_id = array_search($query[0], $allMainKeys)) {
           $mainKey = pull_main_key::find($mainKey_id);
 
@@ -43,7 +41,7 @@ class VotingController extends Controller
           ], 403);//forbidden
         }
         }else{
-          //subkey not found i.e probably syntax error
+          //either mainkey typo or wrong shortcode hit by user
           return response([
               'message' => "Oops! main key not found"
           ], 400);
@@ -51,5 +49,9 @@ class VotingController extends Controller
         }
 
 
+    }
+
+    public function ParseResultQuery(Request $request){
+        echo"result will be published soon";
     }
 }

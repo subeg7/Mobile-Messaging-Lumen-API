@@ -77,11 +77,9 @@ class FileController extends Controller
     }
 
     public function viewdbofuser($userId){
-      // below code returns every files+column+data of a user
-      // $fileAsJson = File::with('file_columns.columns_data')->where('user_id',$userId)->get();
       $fileAsJson = File::where('user_id',$userId)->get(); //returns only the file details without data
       return view('myFiles')->with('files',$fileAsJson);
-      return $fileAsJson;
+      // return $fileAsJson;
     }
 
     public function viewdbbyid($dbId){
