@@ -81,14 +81,14 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('updatebalance/{balance}','BalanceTransactionController@updatebalance');
 
         //pull component
-      Route::group(['middleware' => ['jwt.verify']], function(){
+      // Route::group(['middleware' => ['jwt.verify']], function(){
         Route::post('/assignshortcode','PullController@assignshortcode');
         Route::post('/addkey','PullController@addkey');
         Route::get('/viewshortcodes/{id}','PullController@viewshortcodes');
         Route::get('/viewkeylist/{id}','PullController@viewkeylist');
         Route::post('/modifykeystatus/{id}','PullController@modifykeystatus');
         Route::delete('/deletekey/{id}','PullController@deletekey');
-      });
+      // });
 
       //excel file controller
       Route::post('/uploaddb/{id}','FileController@uploaddb');
