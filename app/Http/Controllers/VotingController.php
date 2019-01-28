@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\pull_main_key;
 use App\pull_sub_keys;
+use App\classes\PullEngine;
 
 class VotingController extends Controller
 {
+  private $pullEngine;
+
+  public function __construct(){
+    $this->pullEngine = new PullEngine();
+    echo"pull engine initalized";
+  }
+
     public function ParseVoteQuery(Request $request){
         $query= explode(" ",$request->text);
         $allMainKeys = pull_main_key::pluck('name','id')->all();
@@ -52,6 +60,25 @@ class VotingController extends Controller
     }
 
     public function ParseResultQuery(Request $request){
-        echo"result will be published soon";
+      $query= explode(" ",$request->text);
+      $allMainKeys = pull_main_key::pluck('name','id')->all();
+      if (false !== $mainKey_id = array_search($query[0], $allMainKeys)) {
+        $mainKey = pull_main_key::find($mainKey_id);
+        if($mainKey->category_id==5){
+          $this->pullEngine->GetFileById(56);
+          // $mainKey->file_id
+          return response([
+              'message' => "processing the result"
+          ], 400);
+        }else{
+          return response([
+              'message' => "you entered worng main key"
+          ], 400);
+        }
+
+      }
+        // echo"result will be published soon";
+
+
     }
 }
