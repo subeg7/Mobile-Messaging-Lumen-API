@@ -13,7 +13,6 @@ class VotingController extends Controller
 
   public function __construct(){
     $this->pullEngine = new PullEngine();
-    echo"pull engine initalized";
   }
 
     public function ParseVoteQuery(Request $request){
@@ -61,11 +60,18 @@ class VotingController extends Controller
 
     public function ParseResultQuery(Request $request){
       $query= explode(" ",$request->text);
+      if(sizeof($query)!=2){
+        return response([
+            'message' => "query texts not complete"
+        ], 400);
+      }
       $allMainKeys = pull_main_key::pluck('name','id')->all();
       if (false !== $mainKey_id = array_search($query[0], $allMainKeys)) {
         $mainKey = pull_main_key::find($mainKey_id);
         if($mainKey->category_id==5){
-          $this->pullEngine->GetFileById(56);
+          $this->pullEngine->LoadFile($mainKey->file_id);//code are shared from the PullEngine
+
+          $this->pullEngine->GetResult($query[1]);//code are shared from the PullEngine
           // $mainKey->file_id
           return response([
               'message' => "processing the result"
