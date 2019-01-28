@@ -18,12 +18,7 @@ class PullController extends Controller
     $usercode->fld_user_id = $request->fld_user_id;
     $usercode->fld_shortcode_id = $request->fld_shortcode_id;
     $usercode->assign_type = $request->assign_type;
-    if($request->category_id==5 && $request->file_id!=null){
-      //this key is for result so file shoud be included
-      $usercode->file_id = $request->file_id;
 
-
-    }
     $usercode->save();
     return "successfully assigned the shortcode to the user";
   }
@@ -36,10 +31,20 @@ class PullController extends Controller
     $mainKey->shortcode_id= $request->main_key['shortcode_id'];
     $mainKey->disable_message= $request->main_key['disable_message'];
     $mainKey->failure_message= $request->main_key['failure_message'];
+    // $mainKey->category_id= $request->main_key['category_id'];
     $mainKey->user_enable_status =1;
     $mainKey->reseller_enable_status =0;
-    $mainKey->save();
+    if($request->main_key['category_id']==5 && $request->main_key['disable_message']!=null){
+      //this key is for result so file shoud be included
+      $mainKey->file_id = $request->main_key['file_id'];
+      $mainKey->save();
+      return response([
+          'status' => "result key: ".$mainKey->name." with file_id".$mainKey->file_id." successfully created"
+      ], 200);
 
+    }
+    $mainKey->save();
+    echo"test point<br>";
     //add the subkeys of the mainkeys
     foreach($request->sub_keys as $sub_key){
       $subKey = new pull_sub_keys();
