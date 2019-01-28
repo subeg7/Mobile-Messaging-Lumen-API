@@ -18,6 +18,12 @@ class PullController extends Controller
     $usercode->fld_user_id = $request->fld_user_id;
     $usercode->fld_shortcode_id = $request->fld_shortcode_id;
     $usercode->assign_type = $request->assign_type;
+    if($request->category_id==5 && $request->file_id!=null){
+      //this key is for result so file shoud be included
+      $usercode->file_id = $request->file_id;
+
+
+    }
     $usercode->save();
     return "successfully assigned the shortcode to the user";
   }
