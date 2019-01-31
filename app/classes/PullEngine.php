@@ -12,6 +12,7 @@ use App\columns_data;
 class PullEngine{
 
   private $file;
+  private $fileId;
   private $columns;
   public function GetFileById($dbId){
     // below line returns  files+column+data of that file_id
@@ -23,28 +24,36 @@ class PullEngine{
   }
 
   public function LoadFile($dbId){
+    $this->fileId = $dbId;
+
     // below code returns every files+column+data of a user
     $fileAsJson = File::with('file_columns.columns_data')->find($dbId);
     if($fileAsJson!=null)
       $this->file = $fileAsJson;
+
     else return "No file with id ".$dbId;
 
   }
 
-  public function GetResult($resultSeekingUser){
-      $columnIndex =2;
+  public function GetResult($MOId){
+      //first get the column_no of the id file
+      $idColumnIndex=file_columns::where('file_id',$this->fileId)->where('name','id')->pluck('sequence_no')[0];
       $cellRowNo=null;
 
+      //sequence_no starts with 1 but array index with 0;
+      $idColumnIndex--;
+
+
+
       //get the required rowno of the file
-        foreach($this->file['file_columns'][$columnIndex]['columns_data'] as $cell){
-            if($cellRowNo==null && $cell->data == $resultSeekingUser ){
+        foreach($this->file['file_columns'][$idColumnIndex]['columns_data'] as $cell){
+            if($cellRowNo==null && $cell->data == $MOId ){
               $cellRowNo=$cell->row_no;
               break;
             }
         }
 
       if($cellRowNo==null) {
-        echo "couldn't find the id in the file,you entered";
         return;
       }
       //create the resultString
@@ -54,12 +63,13 @@ class PullEngine{
         $resutString.=$cols->name;
         foreach($this->file['file_columns'][$columnIndex++]['columns_data'] as $cell){
             if($cell->row_no== $cellRowNo){
-                $resutString.=":".$cell->data."||";
+                $resutString.=":".$cell->data.",";
             }
         }
       }
 
-      echo $resutString;
+      // echo "pull engine:"+$resutString;
+      return $resutString;
 
   }
 

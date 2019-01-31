@@ -65,7 +65,7 @@ class VotingController extends Controller
       // return;
       if(sizeof($query)!=2){
         return response([
-            'message' => "query texts not complete"
+            'result' => "sorry, your syntax is wrong"
         ], 400);
       }
       $allMainKeys = pull_main_key::pluck('name','id')->all();
@@ -74,7 +74,18 @@ class VotingController extends Controller
         if($mainKey->category_id==5){
           $this->pullEngine->LoadFile($mainKey->file_id);//code are shared from the PullEngine
 
-          $this->pullEngine->GetResult($query[1]);//code are shared from the PullEngine
+          if( ($result = $this->pullEngine->GetResult($query[1]) )!=null ){//code are shared from the PullEngine
+            return response([
+                'result' => $result,
+                'message'=>'success'
+            ], 200);
+          }else{
+            return response([
+                'result' => $mainKey->failure_message,
+                'return' => $result,
+                'message'=>'no result found'
+            ], 400);
+          }
           // $mainKey->file_id
           return ;
         }else{

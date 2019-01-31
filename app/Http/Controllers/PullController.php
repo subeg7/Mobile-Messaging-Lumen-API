@@ -31,7 +31,7 @@ class PullController extends Controller
     $mainKey->shortcode_id= $request->main_key['shortcode_id'];
     $mainKey->disable_message= $request->main_key['disable_message'];
     $mainKey->failure_message= $request->main_key['failure_message'];
-    // $mainKey->category_id= $request->main_key['category_id'];
+    $mainKey->category_id= $request->main_key['category_id'];
     $mainKey->user_enable_status =1;
     $mainKey->reseller_enable_status =0;
     if($request->main_key['category_id']==5 && $request->main_key['disable_message']!=null){
