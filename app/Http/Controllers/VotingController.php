@@ -59,7 +59,10 @@ class VotingController extends Controller
     }
 
     public function ParseResultQuery(Request $request){
+
       $query= explode(" ",$request->text);
+      // print_r($query);
+      // return;
       if(sizeof($query)!=2){
         return response([
             'message' => "query texts not complete"
@@ -73,9 +76,7 @@ class VotingController extends Controller
 
           $this->pullEngine->GetResult($query[1]);//code are shared from the PullEngine
           // $mainKey->file_id
-          return response([
-              'message' => "processing the result"
-          ], 400);
+          return ;
         }else{
           return response([
               'message' => "you entered worng main key"

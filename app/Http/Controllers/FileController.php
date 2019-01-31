@@ -33,6 +33,7 @@ class FileController extends Controller
     }
 
     public function uploaddb(Request $request ,$userId){
+       // return $request->file;
       if($request->hasFile('file')){
       $excel = Importer::make('Excel');
       $excel->load($request->file('file')->getRealPath());
@@ -71,14 +72,23 @@ class FileController extends Controller
         }
         $columnNo++;
       }
-        return "successfully  stored ".$totalRows." rows & ".$totalCols." columns";
+        // return "successfully  stored ".$totalRows." rows & ".$totalCols." columns";
+        return response([
+            'status' => "successfully  stored ".$totalRows." rows & ".$totalCols." columns",
+            'file_id'=>$file->id
+        ], 200);
       }else
         return "error no file found";
     }
 
     public function viewdbofuser($userId){
       $fileAsJson = File::where('user_id',$userId)->get(); //returns only the file details without data
-      return view('myFiles')->with('files',$fileAsJson);
+      return response([
+        'status' => "success",
+        // 'message' => "data fetching ",
+        'data'=>$fileAsJson
+      ], 200);
+      // return view('myFiles')->with('files',$fileAsJson);
       // return $fileAsJson;
     }
 

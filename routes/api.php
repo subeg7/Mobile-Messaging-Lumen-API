@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1'], function () {
+  Route::get('/',function(){
+    return "Welcome to the world of easy service";
+  }); 
         //loginuser
         Route::post('login', 'AuthController@authenticate');
         //register,delete user
@@ -100,6 +103,7 @@ Route::group(['prefix' => 'v1'], function () {
         //voting and polling routes
         Route::post('/vote','VotingController@ParseVoteQuery');
         Route::post('/viewresult','VotingController@ParseResultQuery');
+
 
 
 
