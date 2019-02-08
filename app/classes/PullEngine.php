@@ -43,8 +43,6 @@ class PullEngine{
       //sequence_no starts with 1 but array index with 0;
       $idColumnIndex--;
 
-
-
       //get the required rowno of the file
         foreach($this->file['file_columns'][$idColumnIndex]['columns_data'] as $cell){
             if($cellRowNo==null && $cell->data == $MOId ){
@@ -57,13 +55,13 @@ class PullEngine{
         return;
       }
       //create the resultString
-      $resutString ="";
+      $resutString ="[";
       $columnIndex=0;
       foreach ($this->file['file_columns'] as $cols) {
         $resutString.=$cols->name;
         foreach($this->file['file_columns'][$columnIndex++]['columns_data'] as $cell){
             if($cell->row_no== $cellRowNo){
-                $resutString.=":".$cell->data.",";
+                $resutString.=":".$cell->data."] [";
             }
         }
       }
